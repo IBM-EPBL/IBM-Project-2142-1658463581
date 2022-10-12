@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+   <body>
+
+    <a href="/">HOME</a>
+    <a href="/signup">Signup</a>
+    <a href="/list">List</a>
+    <a href="/"></a>
+    <br><hr>
+
+    {{ msg }}
+
+      <table border = 1>
+         <thead>
+            <td>Name</td>
+            <td>Email</td>
+            <td>Mobile</td>
+            <td>City</td>
+            <td>State</td>
+            <td>Country</td>
+            <td>Password</td>
+         </thead>
+         
+         {% for row in students %}
+            <tr>
+               <td>{{row["Name"]}}</td>
+               <td>{{row["Email"]}}</td>
+               <td>{{row["Mobile"]}}</td>
+               <td>{{row["City"]}}</td>	
+               <td>{{row["State"]}}</td>
+               <td>{{row["Country"]}}</td>	
+               <td>{{row["Password"]}}</td>		
+            </tr>
+         {% endfor %}
+      </table>
+   </body>
+</html>
