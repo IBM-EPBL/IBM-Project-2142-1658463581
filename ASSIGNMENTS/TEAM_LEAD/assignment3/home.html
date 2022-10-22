@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WATSON CHATBOT</title>
+
+</head>
+<body  style="background-color:#dcf3f5">
+    <div class="header">
+     <img src="logo.jpg" alt="logo" width="160" height="90">
+     <h1>KORBES.INC</h1>
+     <p>We're always here to help you out !</p>
+    </div>
+    <div align="center">
+        <img src="https://img.freepik.com/free-vector/cartoon-hospital-hallway-with-wheelchair-trolley-bed-empty-hall-interior-medical-clinic-with-ward-stretcher-placards-wall-surgery-room-doors-waiting-corridor-lobby-patients_88138-847.jpg?w=2000" width="1600" height="900">
+    </div>   
+      <script>
+        window.watsonAssistantChatOptions = {
+          integrationID: "9e6d8c6b-3e19-4f1b-93a6-b72af155c854", // The ID of this integration.
+          region: "au-syd", // The region your integration is hosted in.
+          serviceInstanceID: "3511948a-47c2-47b4-98ee-3a0cc9a2ef25", // The ID of your service instance.
+          onLoad: function(instance) { instance.render(); }
+        };
+        setTimeout(function(){
+          const t=document.createElement('script');
+          t.src="https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + (window.watsonAssistantChatOptions.clientVersion || 'latest') + "/WatsonAssistantChatEntry.js";
+          document.head.appendChild(t);
+        });
+      </script>
+
+</body>
+</html>
