@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/style1.css') }}" />
+  <title>User Profile</title>
+</head>
+<body>
+
+  <header id="main-header">
+    <div class="container">
+      <nav>
+        <ul>
+          <li><img src="{{ url_for('static',filename='images/home.svg') }}" alt="Home">Home</li>
+          <li><img src="{{ url_for('static',filename='images/history.png') }}" alt="Home" width="20" height="25">History</li>
+          <li><img src="{{ url_for('static',filename='images/message.svg') }}" alt="Home">Messages</li>
+        </ul>
+      </nav>
+      <img src="{{ url_for('static',filename='images/logo.png') }}" alt="Logo" >
+      <div class="side">
+          <input type="text" placeholder="Search on Nutrino">
+          <img src="{{ url_for('static',filename='images/avatar.png') }}" alt="Avatar">
+          <button><a href="/logout">Logout</a></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="banner">
+    <h1>Nutrino</h1>
+  </div>
+
+  <div class="bar">
+    <div class="container">
+      <ul>
+        <li class="active">
+          <span>Recent Searches</span>
+        </li>
+        
+        <li>
+          <span>Active Plan</span>
+          <strong>Slim</strong>
+        </li>
+        
+        <li>
+          <span>Track History</span>
+        </li>
+      </ul>
+  
+      <div class="actions">
+        <button>Edit </button>
+        <img src="images/more.svg" alt="More">
+      </div>
+    </div>
+  </div>
+
+  <div class="wrapper-content">
+    <div class="container">
+      <aside class="profile">
+        <img src="{{ url_for('static',filename='images/avatar.png') }}" class="avatar" >
+        <h1>{{session.name}}</h1>
+  
+        <ul class="list">
+          <li><img src="{{ url_for('static',filename='images/place.svg') }}" alt="Place">City</li>
+          <li><img src="{{ url_for('static',filename='images/url.svg') }}" alt="URL">E-mail</li>
+          <li><img src="{{ url_for('static',filename='images/born.svg') }}" alt="Born">DOB</li>
+          <li><img src="{{ url_for('static',filename='images/phone.png') }}" alt="Born" width="20" height="25">Phone</li>
+        </ul>
+
+        <div class="widget images">
+          <strong><img src="{{ url_for('static',filename='images/images.svg') }}" alt="Images"> Your Recent searches</strong>
+          <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+        </div>
+
+      </aside>
+
+      <section class="timeline">
+        <nav>
+          <a href="" class="active">Yesterday</a>
+          <a href="">Today</a>
+        </nav>
+
+        <ul class="tweets">
+
+          <li>
+            <img src="{{ url_for('static',filename='images/avatar.png') }}" alt="Avatar">
+            <div class="info">
+              <strong>morning</strong>
+              <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+              </ul>
+              
+            </div>
+          </li>
+
+          <li>
+            <img src="{{ url_for('static',filename='images/avatar.png') }}" alt="Avatar">
+            <div class="info">
+              <strong>Afternoon</strong>
+              <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+               
+              </ul>
+              
+            </div>
+          </li>
+
+          <li>
+            <img src="{{ url_for('static',filename='images/avatar.png') }}" alt="Avatar">
+            <div class="info">
+              <strong>Evening</strong>
+              <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                
+              </ul>
+              
+            </div>
+          </li>
+
+          <li>
+            <img src="{{ url_for('static',filename='images/avatar.png') }}" alt="Avatar">
+            <div class="info">
+              <strong>Night</strong>
+              <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+              </ul>
+              
+            </div>
+          </li>
+
+          
+
+        </ul>
+      </section>
+
+      <aside class="widgets">
+        <div class="widget follow">
+          <div class="title">
+            <strong>Looking For a New Diet Plan?</strong>
+            <a href="">Details</a>
+          </div>
+
+          <ul>
+            <li>
+              <div class="profile">
+                <img src="{{ url_for('static',filename='images/lean.jpg') }}" alt="Avatar" width="10" height="15">
+                <div class="info">
+                  <strong>Slim <span>@30days</span></strong>
+                  <button>Go</button>
+                </div>
+              </div>
+              <a href="">x</a>
+            </li>
+            
+            <li>
+              <div class="profile">
+                <img src="{{ url_for('static',filename='images/fit.jpg') }}" alt="Avatar">
+                <div class="info">
+                  <strong>Fit <span>@60days</span></strong>
+                  <button>Go</button>
+                </div>
+              </div>
+              <a href="">x</a>
+            </li>
+
+            <li>
+              <div class="profile">
+                <img src="{{ url_for('static',filename='images/obese.png') }}" alt="Avatar">
+                <div class="info">
+                  <strong>Fat <span>@90days</span></strong>
+                  <button>Go</button>
+                </div>
+              </div>
+              <a href="">x</a>
+            </li>
+          </ul>
+
+        </div>
+      </aside>
+    </div>
+  </div>
+
+
+</body>
+</html>
