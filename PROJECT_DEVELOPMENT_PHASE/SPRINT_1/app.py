@@ -65,15 +65,7 @@ def register():
         else:
             cursor.execute('INSERT INTO user VALUES ( % s, % s, % s)', (userName, email, password, ))
             mysql.connection.commit()
-            # message = Mail(from_email='karunakaran.ashish@gmail.com',to_emails=email,subject='Welcome Aboard!!!From Nutrino',html_content='<strong>You have been successfully registered </strong>')
-            # try:
-            #     sg = SendGridAPIClient(os.environ.get("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"))
-            #     response = sg.send(message)
-            #     print(response.status_code)
-            #     print(response.body)
-            #     print(response.headers)
-            # except Exception as e:
-            #     print(e.message)
+           
             mesage = 'You have successfully registered !'
     elif request.method == 'POST':
             mesage = 'Please fill out the form !'
