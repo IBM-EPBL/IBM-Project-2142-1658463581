@@ -16,8 +16,8 @@ from api import image
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:ashish210901@127.0.0.1/users'
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'ibm_db_sa://rfs19780:D2Ky156OxjrASE8s@2f3279a5-73d1-4859-88f0-a6c3e6b4b907.c3n41cmd0nqnrk39u98g.databases.appdomain.cloud.com:30756/bludb'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:xxxxx@xxxxxx/xxxx'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'ibm_db_sa://xxxxxxxxxyyyyyyyyyyyyyyyyxxxxxxxxxyyyyyyyyyyyyyyyyyyyyyyyyyyyy.com:30756/bludb'
 
 db = SQLAlchemy(app)
 bcrypt=Bcrypt(app)
