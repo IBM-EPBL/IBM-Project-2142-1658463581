@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Image Analyzer</title>
+    <meta name="author" content="David Urbansky">
+    <meta name="description" content="A spoonacular sample app.">
+    <meta name="keywords" content="spoonacular, sample, app">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.1.0/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/vue-file-agent@latest/dist/vue-file-agent.css" />
+    <script src="https://unpkg.com/vue-file-agent@latest/dist/vue-file-agent.umd.js"></script>
+   </head>
+
+<body>
+   
+
+    <div id="app">
+        <h1>Get to know your Nutritional value of your food...</h1>
+
+        <div id="imageChooser">
+            <VueFileAgent ref="vueFileAgent" :multiple="false" :deletable="true" :uploadUrl="uploadUrl" meta="false"
+                :accept="'image/*'" :maxSize="'10MB'" :maxFiles="1" @upload="onUpload($event)" compact="true"
+                @select="onSelect" :helpText="'Choose images or zip files'"
+                :errorText="{
+              type: 'Invalid file type. Only images allowed',
+              size: 'Files should not exceed 10MB in size',
+            }" v-model="foodImages"></VueFileAgent>
+        </div>
+        <template v-if="analyzed">
+            <p>
+                I think this is <span class="category">{{ analyzedImage.category.name.replace('_', ' ') }}</span> -
+                {{ probabilityText }}
+                
+            </p>
+        </template>
+        <template v-else>
+            <p>upload an image here...<span
+                    style="position:relative;top:16px;left:5px;"></span>
+            </p>
+        </template>
+        <li><a href="/" style="color:#ffffff">Home</a></li>
+        <li><a href="about" style="color:#ffffff">About</a></li>
+        <li><a href="profile" style="color:#ffffff">Profile</a></li>
+        <div style="clear:both;"></div>
+
+        <template v-if="analyzed">
+            <h1>Nutrition profile of the average <span>{{ analyzedImage.category.name.replace('_', ' ') }}</span></h1>
+
+            <div id="calories" class="nutritionBar">
+                <div></div><span>{{ nutrition.calories }} calories</span>
+            </div>
+            <div id="fat" class="nutritionBar">
+                <div></div><span>{{ nutrition.fat }}{{ analyzedImage.nutrition.fat.unit }} fat</span>
+            </div>
+            <div id="protein" class="nutritionBar">
+                <div></div><span>{{ nutrition.protein }}{{ analyzedImage.nutrition.protein.unit }} protein</span>
+            </div>
+            <div id="carbs" class="nutritionBar">
+                <div></div><span>{{ nutrition.carbs }}{{ analyzedImage.nutrition.carbs.unit }} carbs</span>
+            </div>
+
+           
+
+            <!-- shameless plug -->
+            <div id="spoonacular">
+                <a href="https://spoonacular.com/food-api">
+                   
+                    
+                </a>
+            </div>
+        </template>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            mounted() {
+            },
+            data: function () {
+                return {
+                    demoImageUrl: 'https://spoonacular.com/recipeImages/635350-240x150.jpg',
+                    uploadUrl: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/images/analyze',
+                    // get a free key here: https://rapidapi.com/spoonacular/api/recipe-food-nutrition/
+                    uploadHeaders: {
+                        'x-rapidapi-host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
+                        'x-rapidapi-key': 'fec580ab23msh31718969c3a7b57p13eb96jsn540037e80f67'
+                    },
+                    foodImages: [],
+                    analyzed: false,
+                    analyzedImage: {
+                        nutrition: {
+                            recipesUsed: 0,
+                            calories: {
+                                value: 0,
+                                unit: 'calories'
+                            },
+                            fat: {
+                                value: 0,
+                                unit: 'g'
+                            },
+                            protein: {
+                                value: 0,
+                                unit: 'g'
+                            },
+                            carbs: {
+                                value: 0,
+                                unit: 'g'
+                            },
+                        },
+                        category: {
+                            name: '',
+                            probability: 0
+                        },
+                        recipes: []
+                    },
+                    nutrition: {
+                        animationMaxWidth: 630, // maximum length for nutrition bars
+                        calories100: 800, // number of calories to reach max length
+                        protein100: 30, // number of grams of protein to reach max length
+                        fat100: 30, // number of grams of fat to reach max length
+                        carbs100: 30, // number of grams of carbs to reach max length
+                        calories: 0,
+                        protein: 0,
+                        fat: 0,
+                        carbs: 0
+                    }
+                };
+            },
+            computed: {
+                probabilityText() {
+                    if (this.analyzedImage.category.probability < 0.2) {
+                        return 'I am really unsure about that!';
+                    }
+                    if (this.analyzedImage.category.probability < 0.4) {
+                        return 'Maybe - maybe not though.';
+                    }
+                    if (this.analyzedImage.category.probability < 0.6) {
+                        return 'Not really sure but looks like it.';
+                    }
+                    if (this.analyzedImage.category.probability < 0.8) {
+                        return 'I am rather confident in that.';
+                    }
+                    if (this.analyzedImage.category.probability < 1) {
+                        return 'Im almost certain!';
+                    }
+                }
+            },
+            methods: {
+                animate() {
+                    let self = this;
+                    var nutritionTimeline = anime.timeline({
+                        duration: 800,
+                        easing: 'easeInOutQuad',
+                    });
+                    nutritionTimeline.add(
+                        {
+                            targets: 'div#calories div',
+                            width: self.nutrition.animationMaxWidth * 
+                            Math.min(1, self.analyzedImage.nutrition.calories.value / self.nutrition.calories100),
+                            update: function (anim) {
+                                self.nutrition.calories = 
+                                Math.round(self.analyzedImage.nutrition.calories.value * anim.progress / 100);
+                            },
+                        }).add({
+                            targets: 'div#fat div',
+                            width: self.nutrition.animationMaxWidth * 
+                            Math.min(1, self.analyzedImage.nutrition.fat.value / self.nutrition.fat100),
+                            update: function (anim) {
+                                self.nutrition.fat = 
+                                Math.round(self.analyzedImage.nutrition.fat.value * anim.progress / 100);
+                            },
+                        }).add({
+                            targets: 'div#protein div',
+                            width: self.nutrition.animationMaxWidth * 
+                            Math.min(1, self.analyzedImage.nutrition.protein.value / self.nutrition.protein100),
+                            update: function (anim) {
+                                self.nutrition.protein = 
+                                Math.round(self.analyzedImage.nutrition.protein.value * anim.progress / 100);
+                            },
+                        }).add({
+                            targets: 'div#carbs div',
+                            width: self.nutrition.animationMaxWidth * 
+                            Math.min(1, self.analyzedImage.nutrition.carbs.value / self.nutrition.carbs100),
+                            update: function (anim) {
+                                self.nutrition.carbs = 
+                                Math.round(self.analyzedImage.nutrition.carbs.value * anim.progress / 100);
+                            },
+                        });
+
+                    nutritionTimeline.add({
+                        targets: '#hungry',
+                        opacity: 1,
+                        duration: 150
+                    });
+
+                    // recipes
+                    nutritionTimeline.add({
+                        targets: '.recipe',
+                        width: 240,
+                        opacity: 1,
+                        rotate: '1turn',
+                        delay: anime.stagger(150)
+                    });
+
+                    // logo
+                    nutritionTimeline.add({
+                        targets: '#spoonacular',
+                        opacity: 1,
+                        rotate: '1turn',
+                    });
+                },
+                // this will be called after the API responds with the image analysis
+                successCallback(data) {
+                    this.analyzedImage = data;
+                    this.analyzed = true;
+                    let self = this;
+                    Vue.nextTick(function () {
+                        self.animate();
+                    });
+                },
+                onUpload(responses) {
+                    this.successCallback(responses[0].data);
+                },
+                // we upload a file directly after it has been added to the upload container
+                onSelect(event) {
+                    this.analyzed = false;
+                    this.uploadFiles();
+                },
+                // using the default uploader, you may use another uploader instead
+                uploadFiles: function () {
+                    this.$refs.vueFileAgent.upload(this.uploadUrl, this.uploadHeaders, this.foodImages);
+                },
+                // make a direct GET request with an image URL instead of a file
+                analyzeWithDemo() {
+                    anime({
+                        targets: '#demoImg',
+                        scale: [1, 0.5],
+                        opacity: [1, 0.5],
+                        rotate: [0, 10, -10],
+                        loop: true,
+                        direction: 'alternate',
+                        easing: 'easeInOutSine',
+                        duration: 800
+                    });
+
+                    
+                    let self = this;
+                    var xmlHttp = new XMLHttpRequest();
+                    xmlHttp.onreadystatechange = function () {
+                        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                            self.successCallback(JSON.parse(xmlHttp.responseText));
+                        }
+                    }
+                    var url = this.uploadUrl + '?imageUrl=' + encodeURIComponent(this.demoImageUrl);
+                    xmlHttp.open("GET", url, true);
+                    xmlHttp.setRequestHeader('x-rapidapi-host', this.uploadHeaders['x-rapidapi-host']);
+                    xmlHttp.setRequestHeader('x-rapidapi-key', this.uploadHeaders['x-rapidapi-key']);
+                    xmlHttp.send(null);
+                }
+            },
+            components: {
+                vuefileagent: VueFileAgent.VueFileAgent
+            }
+        });
+    </script>
+
+    <style>
+        body {
+            background: #780206;  /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #061161, #780206);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #061161, #780206); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+                
+   }
+
+        #app {
+            font-family: 'assistant';
+            background-color: #fff;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: auto;
+            padding: 20px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12);
+            border-radius: 22px;
+        }
+
+        #demoImg {
+            margin: 10px 80px 0 0;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+        .vue-file-agent {
+            width: 190px;
+        }
+
+        #app>h1:first-of-type {
+            margin-top: 0;
+        }
+
+        h1 {
+            margin-top: 60px;
+        }
+
+        h1#hungry {
+            opacity: 0;
+        }
+
+        #imageChooser {
+            display: inline-block;
+            margin-right: 20px;
+            
+        }
+
+        .recipe {
+            display: inline-block;
+            max-width: 240px;
+            width: 50px;
+            opacity: 0;
+            margin-right: 12px;
+            margin-bottom: 12px;
+        }
+
+        .recipe h4 {
+            margin: 5px 0 5px 0;
+            max-height: 50px;
+            overflow: hidden;
+        }
+
+        .recipe img {
+            max-width: 100%;
+        }
+
+        .nutritionBar {
+            height: 30px;
+            margin-bottom: 10px;
+        }
+
+        .nutritionBar div {
+            height: 100%;
+            width: 0;
+            float: left;
+            margin-right: 20px;
+        }
+
+        .nutritionBar span {
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        p {
+            font-size: 22px;
+            display: inline;
+        }
+
+        span.category {
+            background-color: #29ad43;
+            color: white;
+            padding: 0 10px;
+            border-radius: 10px;
+        }
+
+        #calories div {
+            background-color: #ff5c5c;
+        }
+
+        #fat div {
+            background-color: #3fcc3f;
+        }
+
+        #protein div {
+            background-color: #7077ff;
+        }
+
+        #carbs div {
+            background-color: #ff9400;
+        }
+
+        #spoonacular {
+            margin-top: 50px;
+            opacity: 0;
+            margin-left: auto;
+            margin-right: auto;
+            width: 200px;
+            text-align: center;
+        }
+    </style>
+</body>
+
+</html>
