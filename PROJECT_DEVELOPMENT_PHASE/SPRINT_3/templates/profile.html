@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="stylesheet"type="text/css" href="{{ url_for('static',filename='css/style3.css') }}"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+</head>
+<body>
+  <nav class="navbar">
+    <a href="" class="navbar-brand text-light"><ul style="list-style-type:none;">
+        <b><li>Nutrino</li></b>
+        <li>From KAAL Group</li>
+      </ul></a> 
+    <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+        <a class="me-3 py-2 text-light text-decoration-none" href="/">Home</a>
+        <a class="py-2 text-light text-decoration-none mr-10" href="about">About</a>
+      </nav>
+      <div class="profile-pic-div">
+  <img src="{{ url_for('static',filename='images/avatar.png') }}" id="photo">
+  <input type="file" id="file">
+  <label for="file" id="uploadBtn">Choose Photo</label>
+  <script type="text/javascript">
+    //declearing html elements
+
+const imgDiv = document.querySelector('.profile-pic-div');
+const img = document.querySelector('#photo');
+const file = document.querySelector('#file');
+const uploadBtn = document.querySelector('#uploadBtn');
+
+//if user hover on img div 
+
+imgDiv.addEventListener('mouseenter', function(){
+    uploadBtn.style.display = "block";
+});
+
+//if we hover out from img div
+
+imgDiv.addEventListener('mouseleave', function(){
+    uploadBtn.style.display = "none";
+});
+
+//lets work for image showing functionality when we choose an image to upload
+
+//when we choose a foto to upload
+
+file.addEventListener('change', function(){
+    //this refers to file
+    const choosedFile = this.files[0];
+
+    if (choosedFile) {
+
+        const reader = new FileReader(); //FileReader is a predefined function of JS
+
+        reader.addEventListener('load', function(){
+            img.setAttribute('src', reader.result);
+        });
+
+        reader.readAsDataURL(choosedFile);
+
+        //Allright is done
+
+        //please like the video
+        //comment if have any issue related to vide & also rate my work in comment section
+
+        //And aslo please subscribe for more tutorial like this
+
+        //thanks for watching
+    }
+});
+  </script>
+</div>
+</nav>
+
+
+
+
+
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-8">
+          <h1 class="display-4 mt-100 text-light" style="font-size:80px">Be The Best Version Of Yourself With <b>Nutrino</b></h1>
+      </div>
+  
+      <div class="col-md-4">
+          <div class="card mt-100 bg-pearl">
+              <div class="card-body">
+                <form action="{{ url_for('profile') }}", method="post">
+                    {{ form.hidden_tag() }}
+                    <fieldset class="form-group">
+                        <legend class="border-bottom mb-4">Add Your Details!</legend>
+                        <div class="form-group">
+                            {{ form.age.label(class="form-control-label") }}
+                            {% if form.age.errors %}
+                                {{ form.age(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.age.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.age(class="form-control form-control-lg") }}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.weight.label(class="form-control-label") }}
+                            {% if form.weight.errors %}
+                                {{ form.weight(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.weight.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.weight(class="form-control form-control-lg") }}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.height.label(class="form-control-label") }}
+                            {% if form.height.errors %}
+                                {{ form.height(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.height.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.height(class="form-control form-control-lg") }}
+                            {% endif %}
+                        </div>
+                    </fieldset><br>
+                    <div class="d-grid gap-2">
+                        <div class="form-group">
+                            {{ form.submit(class="btn btn-outline-info") }}
+                        </div>
+                        {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            {% for msg in messages %}
+                                <p>{{msg}}</p>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    </div>
+                </form>
+                 
+              </div>
+          </div>
+
+      </div>
+
+</body>
+</html>
