@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/style1.css') }}"/>
+  <title>User Profile</title>
+  <style>
+    a { text-decoration: none;
+     }
+  </style>
+</head>
+<body>
+
+  <header id="main-header">
+    <div class="container">
+      <nav>
+        <ul>
+          <li><img src="{{ url_for('static',filename='images/home.svg') }}" alt="Home" width="15" height="15" ><a href="/">Home</a></li>
+          <li><img src="{{ url_for('static',filename='images/info.png') }}" alt="messages" width="15" height="15"><a href="about">About</a></li>
+          <li><img src="{{ url_for('static',filename='images/avatar.png') }}" alt="messages" width="19" height="19"><a href="profile">Profile</a></li>
+
+        </ul>
+      </nav>
+      <img src="{{ url_for('static',filename='images/logo.png') }}" alt="Logo" >
+      <div class="side">
+          <img src="{{ url_for('static',filename='images/avatar.png') }}" alt="Avatar">
+          <button>Log Out</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="banner">
+    <h1>Nutrino</h1>
+  </div>
+
+  <div class="bar">
+    <div class="container">
+      <ul>
+        <li  >
+          <span><a href="dashboard" 
+            style="text-decoration: none">Add calories </a></span>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  <div class="wrapper-content">
+    <div class="container">
+      <aside class="profile">
+        <img src="{{ url_for('static',filename='images/avatar.png') }}" class="avatar" alt="img avatar">
+        <h1 style="color: white">User name</h1>
+  
+        <ul class="list">
+          <li>E-mail</li><br>
+          <li>BMI</li><br>
+        </ul>
+
+        <div class="widget {{ url_for('static',filename='images/') }}">
+        </div>
+        <div>
+          
+      </aside>
+      
+
+      <section class="timeline">
+        <nav>
+          <aside class="widgets">
+            <div class="widget follow">
+              <h2 >Calorie Intake: X/XXXX</h2>
+             
+            </div>
+          </aside>
+        </nav>
+
+        <ul class="tweets">
+
+          
+            <div class="widget follow">
+              <table id="tbl" class="table" border="2"   style="width:30%">
+                <thead>
+                  <th>Food</th> 
+                  <th>Calories taken</th>
+                  <th>Delete</th> 
+                </thead>
+              </table>
+
+               </div>
+     
+      </ul>
+      </section>
+      
+      <section class="timeline">
+      
+        <div class="widget follow">
+          <div class="title">
+            <strong>Add Your Daily-day calories</strong><br><br>
+            
+            <form method="POST" name="sample">
+          
+              <br>
+              Food <input type="text" name="Food"> <br>
+              Calories <input type="text" name="Calories">
+              <br><br>
+              <input align="center" type="button" name="add" value="Add Data" onclick="addStudent();" class="btn btn-danger"><hr>
+              </form>
+              <script type="text/javascript">
+               
+                function addStudent()
+                { 
+                    var Food=document.sample.Food.value; 
+                    var Calories=document.sample.Calories.value; 
+                    
+                    var tr = document.createElement('tr');
+                    
+                    var td1 = tr.appendChild(document.createElement('td'));
+                    var td2 = tr.appendChild(document.createElement('td'));
+                    var td3 = tr.appendChild(document.createElement('td'));
+                    
+                    
+                    td1.innerHTML=Food;
+                    td2.innerHTML=Calories;
+                    td3.innerHTML='<input type="button" name="del" value="Delete" onclick="delStudent(this);" class="btn btn-secondary">'
+                  
+                    document.getElementById("tbl").appendChild(tr);
+                }
+              
+                function UpStud(stud){
+                    var Food=document.sample.Food.value; 
+                    var Calories=document.sample.Calories.value; 
+                    var s = stud.parentNode.parentNode;
+                    var tr = document.createElement('tr');
+                    
+                    var td1 = tr.appendChild(document.createElement('td'));
+                    var td2 = tr.appendChild(document.createElement('td'));
+                    var td3 = tr.appendChild(document.createElement('td'));
+                    
+                    td1.innerHTML='<input type="number" name="Food1">';
+                    td2.innerHTML='<input type="text" name="Calories1">';
+                    td3.innerHTML='<input type="button" name="del" value="Delete" onclick="delStudent(this);" class="btn btn-secondary">'
+                  
+                    document.getElementById("tbl").replaceChild(tr, s);
+                }
+              
+                function addUpStud(stud){
+                    var Food=document.sample.Food1.value; 
+                    var Calories=document.sample.Calories1.value; 
+                    var s = stud.parentNode.parentNode;
+                    var tr = document.createElement('tr');
+                    
+                    var td1 = tr.appendChild(document.createElement('td'));
+                    var td2 = tr.appendChild(document.createElement('td'));
+                    var td3 = tr.appendChild(document.createElement('td'));
+                  
+                    
+                    td1.innerHTML=Food;
+                    td2.innerHTML=Calories;
+                    td3.innerHTML='<input type="button" name="del" value="Delete" onclick="delStudent(this);" class="btn btn-secondary">'
+                  
+                    document.getElementById("tbl").replaceChild(tr, s);
+                }
+              
+                function delStudent(Stud){
+                    var s=Stud.parentNode.parentNode;
+                    s.parentNode.removeChild(s);
+                }
+              
+              </script>
+            </li>
+          </ul>
+
+        </div> <aside class="img">
+        <br><br><br><br>
+        <input class="file-upload-input" type="file" onchange="readURL(this)" accept="Image/*"><br>
+       <br>
+     <i>Upload your Image</i>
+  </aside>
+      </aside>
+
+        </ul>
+      </aside>
+     
+
+      
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+
+  
+</body>
+</html>
