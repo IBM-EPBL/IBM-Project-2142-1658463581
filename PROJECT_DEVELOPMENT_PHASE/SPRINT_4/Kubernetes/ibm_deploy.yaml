@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: flask-app-container
-          image: jp.icr.io/ibmtrainning/flask-app-testing
+          image: jp.icr.io/ibm/nutrino:0.1
           imagePullPolicy: Always
           ports:
             - containerPort: 5000
